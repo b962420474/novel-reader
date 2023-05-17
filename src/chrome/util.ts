@@ -50,22 +50,26 @@ const loadBook = (dir:string) => {
   const datas:content = {}
   let contents:string[] = []
   let i = 0
-  const buffer: number[] = []
   return new Promise<{menus:menu[], datas:content, title:string}>((resolve, reject) => {
     const readStream = fs.createReadStream(dir)
     let char
+    const t = Date.now()
+    let last = ''
     readStream.on('readable', () => {
-      while ((char = readStream.read(1)) !== null) {
-        if (char[0] === 0x0a) {
-          writeFileWithLine(Buffer.from(buffer).toString(), false)
-          buffer.length = 0
+      while ((char = readStream.read(1024)) !== null) {
+        const m = Buffer.from(char).toString().split('\n')
+        if (m.length === 1) {
+          last = last + m[0]
         } else {
-          buffer.push(char[0])
+          m[0] = last + m[0]
+          last = m.splice(m.length - 1, 1).join('')
         }
+        m.forEach(item => writeFileWithLine(item, false))
       }
     })
     readStream.on('end', () => {
-      writeFileWithLine(Buffer.from(buffer).toString(), true)
+      writeFileWithLine(last, true)
+      console.log((Date.now() - t) / 1000, 's')
     })
     readStream.on('error', (err) => {
       reject(err)
