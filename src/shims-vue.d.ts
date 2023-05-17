@@ -9,3 +9,4 @@ declare module jquery {
 declare module '@/lib/turn.js' {
   export default ($)=>{}
 }	
+declare module 'speak-tts';

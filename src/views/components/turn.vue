@@ -65,40 +65,52 @@ const handleClick = (e: MouseEvent) => {
   }
 }
 const prev = () => {
-  if (props.list[0] === '') {
-    return
-  }
-  const dom = document.querySelectorAll('#book .page')[0] as HTMLElement
-  if (dom) {
-    dom.style.transform = 'rotateY(0deg)'
-    dom.style.transition = 'all 0.5s ease-in'
-    dom.style.zIndex = '1001'
-  }
-  const end = () => {
-    dom.removeEventListener('webkitTransitionEnd', end)
-    nextTick(() => {
-      emit('prev')
-    })
-  }
-  dom.addEventListener('webkitTransitionEnd', end, false)
+  return new Promise<void>((resolve, reject) => {
+    if (props.list[0] === '') {
+      reject(new Error('已是首页'))
+      return
+    }
+    const dom = document.querySelectorAll('#book .page')[0] as HTMLElement
+    if (dom) {
+      dom.style.transform = 'rotateY(0deg)'
+      dom.style.transition = 'all 0.5s ease-in'
+      dom.style.zIndex = '1001'
+    }
+    const end = () => {
+      dom.removeEventListener('webkitTransitionEnd', end)
+      nextTick(() => {
+        emit('prev')
+        resolve()
+      })
+    }
+    dom.addEventListener('webkitTransitionEnd', end, false)
+  })
 }
 const next = () => {
-  if (props.list[2] === '') {
-    return
-  }
-  const dom = document.querySelectorAll('#book .page')[1] as HTMLElement
-  if (dom) {
-    dom.style.transform = 'rotateY(90deg)'
-    dom.style.transition = 'all 0.5s ease-in'
-  }
-  const end = () => {
-    dom.removeEventListener('webkitTransitionEnd', end)
-    nextTick(() => {
-      emit('next')
-    })
-  }
-  dom.addEventListener('webkitTransitionEnd', end, false)
+  return new Promise<void>((resolve, reject) => {
+    if (props.list[2] === '') {
+      reject(new Error('已是尾页'))
+      return
+    }
+    const dom = document.querySelectorAll('#book .page')[1] as HTMLElement
+    if (dom) {
+      dom.style.transform = 'rotateY(90deg)'
+      dom.style.transition = 'all 0.5s ease-in'
+    }
+    const end = () => {
+      dom.removeEventListener('webkitTransitionEnd', end)
+      nextTick(() => {
+        emit('next')
+        resolve()
+      })
+    }
+    dom.addEventListener('webkitTransitionEnd', end, false)
+  })
 }
+defineExpose({
+  prev,
+  next
+})
 </script>
 <style scoped lang="scss">
 #book {

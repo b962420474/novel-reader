@@ -2,6 +2,7 @@
   "name": "novel-reader",
   "version": "0.1.0",
   "private": true,
+  "main": "background.js",
   "scripts": {
     "test:unit": "vue-cli-service test:unit",
     "lint": "vue-cli-service lint",
@@ -18,6 +19,7 @@
     "iconv-lite": "^0.6.3",
     "jquery": "^3.6.4",
     "jschardet": "^3.0.0",
+    "speak-tts": "^2.0.8",
     "vue": "^3.0.0",
     "vue-class-component": "^8.0.0-0",
     "vue-cli-plugin-electron-builder": "^2.1.1",

@@ -13,6 +13,7 @@ import turn from '@/views/components/turn.vue'
 import { content, menu } from '@/types/book'
 import getPages from './cal'
 import { saveBookmark } from '@/chrome'
+import { initTTS } from '../tts'
 const props = defineProps<{
   fontSize: number,
   lineHeight: number,
@@ -115,6 +116,16 @@ const cache = computed(() => {
   }
   return m
 })
+
+// 语音播报
+initTTS(() => {
+  return cache.value[1].replaceAll('<br>', '').replaceAll('</br>', '').replaceAll('<h4>', '').replaceAll('</h4>', '').replaceAll('&nbsp;', '')
+}, async () => {
+  if (turner.value) {
+    await (turner.value as any).next()
+  }
+})
+
 const init = (value = 0) => {
   cacheId.value = value
   nextTick(() => {
