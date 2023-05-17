@@ -15,15 +15,13 @@ const props = defineProps<{
   isShow: boolean,
   id: number
 }>()
-interface Emits {
-  (event: 'jump', value: number): void
-}
-const emit = defineEmits<Emits>()
-const vs = ref(null)
+
 const styles = computed(() => {
   return props.isShow ? { transform: 'translateX(0)' } : { transform: 'translateX(-100%)' }
 })
 
+// 显示定位当前章节
+const vs = ref(null)
 watch(() => props.isShow, (oldVal, newVal) => {
   if (oldVal !== newVal && !newVal) {
     if (vs.value && props.isShow) {
@@ -32,6 +30,12 @@ watch(() => props.isShow, (oldVal, newVal) => {
     }
   }
 })
+
+// 目录跳转
+interface Emits {
+  (event: 'jump', value: number): void
+}
+const emit = defineEmits<Emits>()
 const click = (e: MouseEvent, item: menu) => {
   e.stopPropagation()
   emit('jump', item.id)

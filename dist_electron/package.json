@@ -2,6 +2,7 @@
   "name": "novel-reader",
   "version": "0.1.0",
   "private": true,
+  "main": "background.js",
   "scripts": {
     "test:unit": "vue-cli-service test:unit",
     "lint": "vue-cli-service lint",

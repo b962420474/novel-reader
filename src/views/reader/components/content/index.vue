@@ -24,7 +24,8 @@ const props = defineProps<{
   menus: menu[],
   url: string
 }>()
-const turner = ref(null)
+
+// 内容显示
 interface Emits {
   (event: 'handleClick'): void
   (event: 'hide'): void
@@ -118,6 +119,7 @@ const cache = computed(() => {
 })
 
 // 语音播报
+const turner = ref(null)
 initTTS(() => {
   return cache.value[1].replaceAll('<br>', '').replaceAll('</br>', '').replaceAll('<h4>', '').replaceAll('</h4>', '').replaceAll('&nbsp;', '')
 }, async () => {
@@ -126,6 +128,7 @@ initTTS(() => {
   }
 })
 
+// 跳转目录以及书签定位初始化
 const init = (value = 0) => {
   cacheId.value = value
   nextTick(() => {

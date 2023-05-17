@@ -1,8 +1,8 @@
 import { content, menu } from '@/types/book'
 import { onBeforeMount, ref } from 'vue'
 import { loadBook } from './util'
-const cacheData:Record<string, {menus: menu[], datas: content, title: string}> = {}
-const getDatas = async (url:string) => {
+const cacheData: Record<string, { menus: menu[], datas: content, title: string }> = {}
+const getDatas = async (url: string) => {
   if (cacheData[url]) {
     return cacheData[url]
   }
@@ -10,7 +10,8 @@ const getDatas = async (url:string) => {
   cacheData[url] = content
   return content
 }
-const load = (url:string) => {
+// 加载此书具体数据
+const load = (url: string) => {
   const title = ref('')
   const menus = ref<menu[]>([])
   const contents = ref<content>({})

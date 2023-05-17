@@ -27,7 +27,7 @@
   </div>
 </template>
 <script lang="ts" setup>
-import { onMounted, ref } from 'vue'
+import { computed, onMounted, ref } from 'vue'
 import { useRoute } from 'vue-router'
 import tab from './components/tab.vue'
 import myContent from './components/content/index.vue'
@@ -36,26 +36,20 @@ import theMenu from './components/menu.vue'
 import { load } from '@/chrome/reader'
 import { loadBookmark } from '@/chrome'
 const route = useRoute()
-const isShow = ref(false)
-const id = ref(1)
+
+// 加载小说数据
 const { title, contents, menus } = load(route.query.url as string)
-const config = {
-  fontSize: 20,
-  lineHeight: 22,
-  width: 370,
-  height: 565
-}
-const styles = ref({
-  fontSize: config.fontSize + 'px',
-  lineHeight: config.lineHeight + 'px',
-  width: config.width + 'px',
-  height: config.height + 'px'
-})
+
+// 更新章节
+const id = ref(1)
 const next = (page: number) => {
   if (page <= menus.value.length && page >= 1) {
     id.value = page
   }
 }
+
+// 侧边栏隐藏显示
+const isShow = ref(false)
 const handleClick = () => {
   isShow.value = !isShow.value
   menuShow.value = false
@@ -68,6 +62,8 @@ const menuShow = ref(false)
 const menuToggle = () => {
   menuShow.value = !menuShow.value
 }
+
+// 跳转目录
 const cont = ref(null)
 const jump = (i: number) => {
   hide()
@@ -89,6 +85,32 @@ const readBookMark = () => {
   })
 }
 readBookMark()
+
+// 初始化样式
+const initStyle = () => {
+  const config = ref({
+    fontSize: 20,
+    lineHeight: 22,
+    width: 370,
+    height: 565
+  })
+  const styles = computed(() => {
+    return {
+      fontSize: config.value.fontSize + 'px',
+      lineHeight: config.value.lineHeight + 'px',
+      width: config.value.width + 'px',
+      height: config.value.height + 'px'
+    }
+  })
+  onMounted(() => {
+    const w = document.documentElement.clientWidth
+    const h = document.documentElement.clientHeight
+    config.value.width = w
+    config.value.height = h
+  })
+  return { config, styles }
+}
+const { styles, config } = initStyle()
 </script>
 <style lang="scss" scoped>
 * {
