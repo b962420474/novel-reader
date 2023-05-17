@@ -4,3 +4,8 @@ declare module '*.vue' {
   const component: DefineComponent<{}, {}, any>
   export default component
 }
+declare module jquery {
+}	
+declare module '@/lib/turn.js' {
+  export default ($)=>{}
+}	

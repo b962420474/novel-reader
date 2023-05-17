@@ -1,0 +1,37 @@
+{
+  "id": "4058268",
+  "name": "novel-reader",
+  "font_family": "iconfont",
+  "css_prefix_text": "icon-",
+  "description": "",
+  "glyphs": [
+    {
+      "icon_id": "909106",
+      "name": "i-白天",
+      "font_class": "baitian",
+      "unicode": "e64f",
+      "unicode_decimal": 58959
+    },
+    {
+      "icon_id": "2076262",
+      "name": "目录",
+      "font_class": "mulu",
+      "unicode": "e890",
+      "unicode_decimal": 59536
+    },
+    {
+      "icon_id": "11372694",
+      "name": "设置",
+      "font_class": "shezhi",
+      "unicode": "e8b7",
+      "unicode_decimal": 59575
+    },
+    {
+      "icon_id": "11674274",
+      "name": "夜间",
+      "font_class": "yejian",
+      "unicode": "e712",
+      "unicode_decimal": 59154
+    }
+  ]
+}

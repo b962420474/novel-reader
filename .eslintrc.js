@@ -1,7 +1,13 @@
 module.exports = {
   root: true,
   env: {
-    node: true
+    node: true,
+    jquery:true
+  },
+  globals: {
+    defineProps: "readonly",
+    defineEmits: "readonly",
+    defineExpose: "readonly"
   },
   extends: [
     'plugin:vue/vue3-essential',
