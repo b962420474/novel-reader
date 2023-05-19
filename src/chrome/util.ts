@@ -4,7 +4,7 @@ import fs from 'fs'
 import iconv from 'iconv-lite'
 import { detect } from 'jschardet'
 import { content, menu } from '@/types/book'
-const send = (event:string, params:any = null) => {
+const send = (event: string, params: any = null) => {
   return new Promise<any>((resolve) => {
     ipcRenderer.send(event, params)
     ipcRenderer.on(event, (event, params) => {
@@ -28,17 +28,20 @@ const importBook = async () => {
   return null
 }
 
-const isTitle = (line:string) => {
-  const reg = /^第(.*?)章/
-  if (reg.test(line)) {
+const isTitle = (line: string) => {
+  const reg = /^第([\u4e00-\u9fa50-9]*)章\s*/
+  if (line.length > 1 && line[0] === ' ' && line[1] !== ' ') {
     return true
   }
-  if (line.length > 1 && line[0] === ' ' && line[1] !== ' ') {
+  if (line.length > 0 && line[0] !== ' ' && /第([\u4e00-\u9fa50-9]*)章/.test(line) && line.length < 20) {
+    return true
+  }
+  if (reg.test(line)) {
     return true
   }
   return false
 }
-const loadBook = (dir:string) => {
+const loadBook = (dir: string) => {
   console.log('dir:', dir)
   if (!dir) {
     return {
@@ -48,13 +51,13 @@ const loadBook = (dir:string) => {
     }
   }
   const name = path.basename(dir as string, '.txt')
-  const menus:menu[] = []
-  const datas:content = {}
-  let contents:string[] = []
+  const menus: menu[] = []
+  const datas: content = {}
+  let contents: string[] = []
   let i = 0
-  return new Promise<{menus:menu[], datas:content, title:string}>((resolve, reject) => {
+  return new Promise<{ menus: menu[], datas: content, title: string }>((resolve, reject) => {
     const t = Date.now()
-    const writeFileWithLine = (line:string, isover:boolean) => {
+    const writeFileWithLine = (line: string, isover: boolean) => {
       if (menus.length < 1) {
         i++
         menus.push({
@@ -88,7 +91,7 @@ const loadBook = (dir:string) => {
   })
 }
 
-const readLine = (dir:string, fn:(content:string, isOver:boolean)=>void, error:(err:Error)=>void):void => {
+const readLine = (dir: string, fn: (content: string, isOver: boolean) => void, error: (err: Error) => void): void => {
   // const readStream = fs.createReadStream(dir)
   // let char
   // const t = Date.now()
@@ -126,7 +129,7 @@ const readLine = (dir:string, fn:(content:string, isOver:boolean)=>void, error:(
     }
   })
 }
-const getEncoding = (buff:Buffer) => {
+const getEncoding = (buff: Buffer) => {
   return detect(buff.slice(0, 128)).encoding
 }
 export { send, importBook, loadBook }
