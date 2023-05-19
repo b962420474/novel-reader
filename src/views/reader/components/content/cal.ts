@@ -1,5 +1,5 @@
 const rate = 4
-const getPages = (text: string, offsetWidth:number, offsetHeight:number, fontSize:number, lineHeight:number, title:string):string[]|null => {
+const getPages = (text: string, offsetWidth: number, offsetHeight: number, fontSize: number, lineHeight: number, title: string): string[] | null => {
   if (!text) return null
   const fontPerLineNum = Math.floor(offsetWidth / fontSize) // 每行字数
   const colPerPageNum = Math.floor(offsetHeight / lineHeight) // 每页行数
@@ -16,13 +16,20 @@ const getPages = (text: string, offsetWidth:number, offsetHeight:number, fontSiz
     }
     // 段首对齐
     ds[i] = '    ' + ds[i].replaceAll(' ', '').replaceAll('<p></p>', '')
-    if (getlength(ds[i]) <= fontPerLineNum * rate) {
+    if (getStrWidth(ds[i], fontSize) <= offsetWidth) {
       nds.push(ds[i])
     } else {
       let m = ds[i]
       while (m.length) {
-        const index = getSliceIndex(m, fontPerLineNum)
-        nds.push(m.slice(0, index))
+        let index = getSliceIndex(m, fontPerLineNum)
+        let str = m.slice(0, index)
+        if (getStrWidth(str, fontSize) > offsetWidth) {
+          index--
+        } else if (getStrWidth(str, fontSize) + fontSize <= offsetWidth) {
+          index++
+        }
+        str = m.slice(0, index)
+        nds.push(str)
         m = m.slice(index)
       }
     }
@@ -76,5 +83,18 @@ const getlength = (str: string) => {
     }
   }
   return len
+}
+const canvas = document.createElement('canvas')
+const context = canvas.getContext('2d')
+const getStrWidth = (text: string, fontSize: number, fontFace = 'arial') => {
+  const font = `${fontSize}px ${fontFace}`
+  if (context) {
+    context.font = font
+    const {
+      width
+    } = context.measureText(text)
+    return width
+  }
+  return 0
 }
 export default getPages
