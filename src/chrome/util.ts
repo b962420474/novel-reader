@@ -74,7 +74,7 @@ const loadBook = (dir: string) => {
           name: line
         })
         contents = []
-      } else {
+      } else if (line.replaceAll(' ', '') !== '') {
         contents.push(line)
       }
       if (isover) {

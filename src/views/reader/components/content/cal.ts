@@ -11,13 +11,11 @@ const getPages = (text: string, offsetWidth: number, offsetHeight: number, fontS
   nds.push(t)
   for (let i = 0; i < ds.length; i++) {
     // 段落添加空行
-    if (nds[nds.length - 1].replaceAll(' ', '').length > 0 && ds[i].replaceAll(' ', '').length > 0) {
-      nds.push('    ')
-    }
+    nds.push('    ')
     // 段首对齐
     ds[i] = '    ' + ds[i].replaceAll(' ', '').replaceAll('<p></p>', '')
     if (getStrWidth(ds[i], fontSize) <= offsetWidth) {
-      nds.push(ds[i])
+      nds.push('<p>' + ds[i] + '</p>')
     } else {
       let m = ds[i]
       while (m.length) {
@@ -29,7 +27,7 @@ const getPages = (text: string, offsetWidth: number, offsetHeight: number, fontS
           index++
         }
         str = m.slice(0, index)
-        nds.push(str)
+        nds.push('<p>' + str + '</p>')
         m = m.slice(index)
       }
     }
@@ -37,13 +35,13 @@ const getPages = (text: string, offsetWidth: number, offsetHeight: number, fontS
   for (let i = 0; i < nds.length; i++) {
     result.push(nds[i])
     if (result.length >= colPerPageNum || (result.findIndex(item => item === t) !== -1 && result.length >= colPerPageNum - 1)) {
-      const str = result.join('<br>').replaceAll(' ', '&nbsp;')
+      const str = result.join('').replaceAll(' ', '&nbsp;')
       textArray.push(str)
       result = []
     }
   }
   if (result.length > 0) {
-    const str = result.join('<br>').replaceAll(' ', '&nbsp;')
+    const str = result.join('').replaceAll(' ', '&nbsp;')
     textArray.push(str)
   }
   return textArray
