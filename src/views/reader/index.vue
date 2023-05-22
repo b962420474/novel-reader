@@ -10,8 +10,8 @@
   </div>
   <div v-show="menus.length >= 1">
     <my-content @handleClick="handleClick" @next="next" :contents="contents" :id="id" :height="config.height"
-      :width="config.width" :font-size="store.state.fontSize" :line-height="store.state.fontSize" :style="styles" :menus="menus"
-      :url="(route.query.url as string)" ref="cont">
+      :width="config.width" :font-size="store.state.fontSize" :line-height="store.state.fontSize + 6" :style="styles"
+      :menus="menus" :url="(route.query.url as string)" ref="cont">
     </my-content>
     <div v-show="isShow" style="width: 100%;
     height: 100%;
@@ -97,7 +97,7 @@ const initStyle = () => {
   const styles = computed(() => {
     return {
       fontSize: store.state.fontSize + 'px',
-      lineHeight: store.state.fontSize + 'px',
+      lineHeight: store.state.fontSize + 6 + 'px',
       width: config.value.width + 'px',
       height: config.value.height + 'px'
     }
