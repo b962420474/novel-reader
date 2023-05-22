@@ -1,4 +1,4 @@
-import { app, protocol, BrowserWindow, ipcMain } from 'electron'
+import { app, protocol, BrowserWindow } from 'electron'
 import { createProtocol } from 'vue-cli-plugin-electron-builder/lib'
 import path from 'path'
 import register from './main/index'
@@ -18,6 +18,7 @@ async function createWindow () {
     minWidth: 375,
     minHeight: 567,
     show: true,
+    icon: path.join(__dirname, '../public/icons/logo.ico'),
     // transparent: true, //窗口透明  设置后还原窗口win.restore()无效
     // backgroundColor: '#000', //背景颜色
     title: '小说阅读器', // 标题
