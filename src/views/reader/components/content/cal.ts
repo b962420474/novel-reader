@@ -11,7 +11,7 @@ const getPages = (text: string, offsetWidth: number, offsetHeight: number, fontS
   nds.push(t)
   for (let i = 0; i < ds.length; i++) {
     // 段落添加空行
-    nds.push('    ')
+    nds.push('<p>    </p>')
     // 段首对齐
     ds[i] = '    ' + ds[i].replaceAll(' ', '').replaceAll('<p></p>', '')
     if (getStrWidth(ds[i], fontSize) <= offsetWidth) {
