@@ -1,16 +1,18 @@
 <template>
   <div class="bottom">
-    <div class="flex">
+    <div class="flex" v-show="!setShow">
       <div class="iconfont btn" @click="handleToggle($event)">&#xe890;</div>
-      <div class="iconfont btn">&#xe8b7;</div>
+      <div class="iconfont btn" @click="openSetting($event)">&#xe8b7;</div>
       <div class="iconfont btn">&#xe712;</div>
       <div class="iconfont btn" @click="handlePlay($event)">{{ state ? '&#xe629;' : '&#xe8a3;' }}</div>
     </div>
+    <setting v-show="setShow" @hide="setShow=false"></setting>
   </div>
 </template>
 <script setup lang="ts">
-import { ref } from 'vue'
-import { pause, play } from './tts'
+import { ref, watch } from 'vue'
+import setting from './setting.vue'
+import { pause, play } from '../tts'
 
 interface Emits {
   (event: 'menuToggle'): void
@@ -30,6 +32,21 @@ const handlePlay = (e: MouseEvent) => {
     play()
   }
   state.value = !state.value
+}
+
+// setting
+const props = defineProps<{
+  isShow: boolean
+}>()
+const setShow = ref(false)
+watch(() => props.isShow, () => {
+  if (props.isShow) {
+    setShow.value = false
+  }
+})
+const openSetting = (e: MouseEvent) => {
+  e.stopPropagation()
+  setShow.value = !setShow.value
 }
 </script>
 <style lang="scss" scoped>

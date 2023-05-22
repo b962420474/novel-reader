@@ -6,7 +6,5 @@ declare module '*.vue' {
 }
 declare module jquery {
 }	
-declare module '@/lib/turn.js' {
-  export default ($)=>{}
-}	
+declare module './theme/*.js';
 declare module 'speak-tts';

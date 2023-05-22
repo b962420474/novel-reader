@@ -8,12 +8,13 @@
   </div>
 </template>
 <script lang="ts" setup>
-import { computed, nextTick, ref } from 'vue'
+import { computed, nextTick, onMounted, ref } from 'vue'
 import turn from '@/views/components/turn.vue'
 import { content, menu } from '@/types/book'
 import getPages from './cal'
 import { saveBookmark } from '@/chrome'
 import { initTTS } from '../tts'
+import { initTheme } from '@/lib/theme'
 const props = defineProps<{
   fontSize: number,
   lineHeight: number,
@@ -128,6 +129,11 @@ initTTS(() => {
   }
 })
 
+// 初始化背景色
+onMounted(async () => {
+  initTheme()
+})
+
 // 跳转目录以及书签定位初始化
 const init = (value = 0) => {
   cacheId.value = value
@@ -146,7 +152,8 @@ defineExpose({
   div {
     width: 100%;
     height: 100%;
-    background: #dbcdcd;
+    color: var(--c-color);
+    background: var(--c-background);
   }
 
 }

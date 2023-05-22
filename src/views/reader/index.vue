@@ -10,7 +10,7 @@
   </div>
   <div v-show="menus.length >= 1">
     <my-content @handleClick="handleClick" @next="next" :contents="contents" :id="id" :height="config.height"
-      :width="config.width" :font-size="config.fontSize" :line-height="config.lineHeight" :style="styles" :menus="menus"
+      :width="config.width" :font-size="store.state.fontSize" :line-height="store.state.fontSize" :style="styles" :menus="menus"
       :url="(route.query.url as string)" ref="cont">
     </my-content>
     <div v-show="isShow" style="width: 100%;
@@ -22,7 +22,7 @@
     background: rgba(0,0,0,0.12);" @click="handleClick">
       <tab :title="title" v-show="!menuShow"></tab>
       <the-menu :menus="menus" :isShow="menuShow" @jump="jump" :id="id"></the-menu>
-      <toolbar @menuToggle="menuToggle" v-show="!menuShow"></toolbar>
+      <toolbar @menuToggle="menuToggle" v-show="!menuShow" :isShow="!isShow"></toolbar>
     </div>
   </div>
 </template>
@@ -31,10 +31,11 @@ import { computed, onMounted, ref } from 'vue'
 import { useRoute } from 'vue-router'
 import tab from './components/tab.vue'
 import myContent from './components/content/index.vue'
-import toolbar from './components/toolbar.vue'
+import toolbar from './components/toolbar/index.vue'
 import theMenu from './components/menu.vue'
 import { load } from '@/chrome/reader'
 import { loadBookmark } from '@/chrome'
+import { useStore } from 'vuex'
 const route = useRoute()
 
 // 加载小说数据
@@ -87,17 +88,16 @@ const readBookMark = () => {
 readBookMark()
 
 // 初始化样式
+const store = useStore()
 const initStyle = () => {
   const config = ref({
-    fontSize: 20,
-    lineHeight: 22,
     width: 370,
     height: 565
   })
   const styles = computed(() => {
     return {
-      fontSize: config.value.fontSize + 'px',
-      lineHeight: config.value.lineHeight + 'px',
+      fontSize: store.state.fontSize + 'px',
+      lineHeight: store.state.fontSize + 'px',
       width: config.value.width + 'px',
       height: config.value.height + 'px'
     }
