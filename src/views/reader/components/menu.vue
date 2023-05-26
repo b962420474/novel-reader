@@ -1,5 +1,5 @@
 <template>
-  <virtual-scroll class="menus" :sourceDataList="menus" :oneDataHeight="31" :style="styles" ref="vs">
+  <virtual-scroll class="menus" :sourceDataList="menus" :oneDataHeight="41" :style="styles" ref="vs">
     <template #item="{ data }">
       <div @click="click($event, data as menu)" :class="id === (data as menu).id ? 'active' : ''">{{
         (data as menu).name }}</div>
@@ -61,6 +61,8 @@ const click = (e: MouseEvent, item: menu) => {
 
   div {
     padding: 5px;
+    border-top: 1px solid #cbb5b545;
+    line-height: 30px;
   }
 }
 </style>
