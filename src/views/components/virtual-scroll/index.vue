@@ -11,7 +11,7 @@
   </div>
 </template>
 <script lang="ts" setup>
-import { computed, nextTick, onMounted, ref } from 'vue'
+import { computed, nextTick, onBeforeUnmount, onMounted, ref } from 'vue'
 
 const props = defineProps({
   oneDataHeight: {
@@ -76,6 +76,7 @@ const blankFillStyle = computed(() => {
   }
 })
 const myResize = () => {
+  console.log('myresize....')
   if (wrapper.value) {
     console.log((wrapper.value as HTMLElement).offsetHeight)
     screenContainSize.value = ~~((wrapper.value as HTMLElement).offsetHeight / props.oneDataHeight) + 2
@@ -86,9 +87,12 @@ onMounted(() => {
     // 挂载后，根据可视容器高度计算可视屏幕容积数量
     myResize()
     // 屏幕尺寸变化以及横屏，都要重新计算可视屏幕容积数量
-    window.onresize = myResize
-    window.onorientationchange = myResize
+    window.addEventListener('resize', myResize, false)
+    // window.onorientationchange = myResize
   })
+})
+onBeforeUnmount(() => {
+  window.removeEventListener('resize', myResize, false)
 })
 const scrollHandler = () => {
   // 1.定时器节流方式

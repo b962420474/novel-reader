@@ -27,7 +27,7 @@
   </div>
 </template>
 <script lang="ts" setup>
-import { computed, onMounted, ref } from 'vue'
+import { computed, onBeforeUnmount, onMounted, ref } from 'vue'
 import { useRoute } from 'vue-router'
 import tab from './components/tab.vue'
 import myContent from './components/content/index.vue'
@@ -102,11 +102,19 @@ const initStyle = () => {
       height: config.value.height + 'px'
     }
   })
-  onMounted(() => {
+  const resize = () => {
+    console.log('resize.....')
     const w = document.documentElement.clientWidth
     const h = document.documentElement.clientHeight
     config.value.width = w
     config.value.height = h
+  }
+  onMounted(() => {
+    resize()
+    window.addEventListener('resize', resize, false)
+  })
+  onBeforeUnmount(() => {
+    window.removeEventListener('resize', resize, false)
   })
   return { config, styles }
 }
