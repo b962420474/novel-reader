@@ -94,17 +94,21 @@ const next = () => {
     }
     const dom = document.querySelectorAll('#book .page')[1] as HTMLElement
     if (dom) {
-      dom.style.transform = 'rotateY(90deg)'
-      dom.style.transition = 'all 0.5s ease-in'
+      const end = () => {
+        dom.removeEventListener('webkitTransitionEnd', end)
+        nextTick(() => {
+          emit('next')
+          resolve()
+        })
+      }
+      if (document.visibilityState === 'visible') {
+        dom.style.transform = 'rotateY(90deg)'
+        dom.style.transition = 'all 0.5s ease-in'
+        dom.addEventListener('webkitTransitionEnd', end, false)
+      } else {
+        end()
+      }
     }
-    const end = () => {
-      dom.removeEventListener('webkitTransitionEnd', end)
-      nextTick(() => {
-        emit('next')
-        resolve()
-      })
-    }
-    dom.addEventListener('webkitTransitionEnd', end, false)
   })
 }
 defineExpose({
