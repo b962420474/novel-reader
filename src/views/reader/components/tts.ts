@@ -60,6 +60,7 @@ const initTTS = (getText: () => string, next: () => Promise<void>): void => {
   onBeforeUnmount(() => {
     console.log('remove.....')
     speech.cancel()
+    isRemuse = false
     bus.remove('onPlay', player)
     bus.remove('onPause', pauser)
   })
