@@ -13,10 +13,10 @@ async function createWindow () {
   // Create the browser window.
   win = new BrowserWindow({
     useContentSize: true,
-    width: 375,
-    height: 567,
-    minWidth: 375,
-    minHeight: 567,
+    width: 325,
+    height: 400,
+    minWidth: 325,
+    minHeight: 400,
     show: true,
     icon: path.join(__dirname, '../public/icons/logo.ico'),
     // transparent: true, //窗口透明  设置后还原窗口win.restore()无效
